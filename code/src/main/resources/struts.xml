@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+
+	<!-- <constant name="struts.objectFactory" value="spring" /> -->
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.convention.result.path" value="/" />
+	<constant name="struts.ui.theme" value="simple" />
+	<!-- 文件上传大小的拦截 拦截10G以下-->
+	<constant name="struts.multipart.maxSize" value="10737418240" />
+	<constant name="struts.action.extension" value="action" /> 
+	<constant name="struts.mapper.class" value="org.apache.struts2.dispatcher.mapper.DefaultActionMapper"></constant>
+	
+	<!-- 用于CRUD Action和Json Result的parent package -->
+	<package name="smfjson-default" extends="json-default">
+		<!-- 基于paramsPrepareParamsStack, 增加store interceptor保证actionMessage在redirect后不会丢失 -->
+		<interceptors>
+			<interceptor-stack name="crudStack">
+				<interceptor-ref name="store">
+					<param name="operationMode">AUTOMATIC</param>
+				</interceptor-ref>
+				<interceptor-ref name="paramsPrepareParamsStack" />
+			</interceptor-stack>
+		</interceptors>
+
+		<default-interceptor-ref name="crudStack" />
+	</package>
+	
+	<package name="smf-default" extends="struts-default"></package>
+
+</struts>

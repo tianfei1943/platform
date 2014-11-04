@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+          http://www.springframework.org/schema/beans   
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd   
+          http://www.springframework.org/schema/security
+          http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+	<security:http pattern="/**/*.jpg" security="none" />
+	<security:http pattern="/**/*.png" security="none" />
+	<security:http pattern="/**/*.gif" security="none" />
+	<security:http pattern="/**/*.css" security="none" />
+	<security:http pattern="/**/*.js"  security="none" />
+	<security:http pattern="/platform/common/**"  security="none" />    
+    <!-- 登录页面不过滤 ， 如果你不需要对某些访问路径，进行权限控制-->
+    <security:http pattern="/platform/login/login.jsp" security="none"/>
+    <security:http auto-config="true">
+        <!-- 登录配置 -->
+        <security:form-login login-page="/platform/login/login.jsp"
+                             authentication-failure-url="/platform/login/login.jsp?err=true"
+                             default-target-url="#{systemConfig.getValue('LayoutHome')}"
+                             username-parameter="j_username"
+                             password-parameter="j_password"
+                             login-processing-url="/j_spring_security_check"/>
+                             <!-- authentication-success-handler-ref="myAuthenticationSuccessHandler" -->
+        <!-- 退出配置 -->
+        <!--
+            logout-url:退出请求地址。系统默认:j_spring_security_logout
+            logout-success-url:退出成功，跳转地址连接。
+            delete-cookies:删除 cookies 内容。
+            success-handler-ref:退出回调接口。类需实现接口: LogoutSuccessHandler
+            invalidate-session:如果设置为 true，用户的 Session 将会在退出时被失效。-->
+         
+        <security:logout logout-success-url="/platform/login/login.jsp" invalidate-session="true"/>
+        <!-- 无权限处理类 -->
+        <security:access-denied-handler ref="accessDeniedHandler"/>
+        <!-- 只能登陆100次 -->
+        <security:session-management session-authentication-error-url="/platform/common/402.jsp" invalid-session-url="/platform/common/402.jsp">
+            <security:concurrency-control max-sessions="100" error-if-maximum-exceeded="true"/>
+        </security:session-management>
+        <!-- 自定义过滤器， 实现用户、角色、权限、资源的数据库管理 -->
+        <security:custom-filter ref="mySecurityFilter" before="FILTER_SECURITY_INTERCEPTOR"/>
+    </security:http>
+
+    <bean id="accessDeniedHandler" class="com.smf.platform.security.LaihecaiAccessDeniedHandler">
+        <property name="accessDeniedUrl" value="/platform/common/403.jsp" />
+    </bean>
+    
+    <!-- 自定义过滤器 -->
+    <bean id="mySecurityFilter" class="com.smf.platform.security.MySecurityInterceptor">
+        <!-- FilterInvocationSecurityMetadataSource 接口实现类, 资源源数据定义 -->
+        <property name="securityMetadataSource" ref="mySecurityMetadataSource"/>
+        <!-- 鉴定管理类，跟用户信息信息有关 -->
+        <property name="authenticationManager" ref="myAuthenticationManager"/>
+        <!-- AccessDecisionManager 接口实现类, 角色跟资源的关系 -->
+        <!-- 访问决策器，决定某个用户具有的角色，是否有足够的权限去访问某个资源     -->
+        <property name="accessDecisionManager" ref="myAccessDecisionManager"/>
+    </bean>
+
+    <!-- 鉴定管理类配置信息 -->
+    <security:authentication-manager alias="myAuthenticationManager">
+        <!-- 鉴定管理类 -->
+        <security:authentication-provider user-service-ref="myUserDetailsService">
+            <!-- 用户详情管理类 [UserDetailsService 接口 实现类] -->
+            <security:password-encoder hash="md5" />
+        </security:authentication-provider>
+    </security:authentication-manager>
+    <!-- 用户详细信息获取接口 -->
+    <bean id="myUserDetailsService" class="com.smf.platform.security.MyUserDetailsService"/>
+    <!-- 访问决策器， 决定某个用户具体的角色，是否有足够的权限访问某个资源 -->
+    <bean id="myAccessDecisionManager" class="com.smf.platform.security.MyAccessDecisionManager"/>
+    <!-- 资源源数据定义， 将所有的资源和权限的对应关系建立起来，即定义某一资源可以被哪些角色去访问。-->
+    <bean id="mySecurityMetadataSource" class="com.smf.platform.security.MySecurityMetadataSource"/>
+    <!-- 用户详情管理类使用的加密方式 
+    <bean id="passwdEcoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"/>
+   -->
+    <!-- PasswordEncoder 密码接口 
+    <bean id="PasswordUtil" class="com.utils.PasswordUtil" lazy-init="false"/>
+    <bean id="myAuthenticationSuccessHandler" class="com.smf.platform.security.MyAuthenticationSuccessHandler"/>-->
+</beans>

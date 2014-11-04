@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:security="http://www.springframework.org/schema/security" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+           	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+           	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+           	http://www.springframework.org/schema/security
+           	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+	<context:annotation-config />
+	<context:component-scan base-package="com.smf" />
+	
+	<aop:aspectj-autoproxy/>
+	
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName">
+			 <value>${jdbc.driverClassName}</value>
+		</property>
+		<property name="url">
+			 <value>${jdbc.url}</value>
+		</property>
+		<property name="username">
+			<value>${jdbc.username}</value>
+		</property>
+		<property name="password">
+			<value>${jdbc.password}</value>
+		</property>
+		<property name="maxActive">
+			<value>150</value>
+		</property>
+		<property name="maxIdle">
+			<value>10</value>
+		</property>
+		<property name="maxWait">
+			<value>6000</value>
+		</property>
+		<property name="testOnBorrow">
+			<value>true</value>
+		</property>
+		<property name="defaultAutoCommit">
+			<value>true</value>
+		</property>
+	</bean>
+	
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="persistenceXmlLocation" value="classpath:persistence.xml" />
+		<property name="persistenceUnitName" value="persistenceUnit" />
+		<property name="jpaDialect" ref="jpaDialect"></property>
+	</bean>
+	
+
+	<bean id="jpaDialect" class="com.smf.platform.framework.dialect.SmfHibernateJpaDialect" />
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory">
+			<ref bean="entityManagerFactory" />
+		</property>
+		<property name="dataSource" ref="dataSource" />
+		<!-- 支持datasource上的jdbc操作的事物  
+		<property name="jpaDialect" ref="jpaDialect" />
+		-->
+	</bean>
+	
+	
+	<bean name="transactionAttributesSource" class="org.springframework.transaction.interceptor.NameMatchTransactionAttributeSource">
+		<property name="properties">
+			<props>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="list*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="query*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="import*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="export*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="submit*">PROPAGATION_REQUIRED</prop>
+				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="modify*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED</prop>
+				<prop key="restore*">PROPAGATION_REQUIRED</prop>
+				<prop key="do*">PROPAGATION_REQUIRED</prop>
+				<prop key="execute*">PROPAGATION_REQUIRED</prop>
+				<prop key="debug">PROPAGATION_REQUIRES_NEW</prop>
+				<prop key="info">PROPAGATION_REQUIRES_NEW</prop>
+				<prop key="error">PROPAGATION_REQUIRES_NEW</prop>
+				<prop key="fatal">PROPAGATION_REQUIRES_NEW</prop>
+				<prop key="warn">PROPAGATION_REQUIRES_NEW</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager">
+			<ref bean="transactionManager"/>
+		</property>
+		<property name="transactionAttributeSource">
+			<ref bean="transactionAttributesSource"/>
+		</property>
+	</bean>
+	
+	<bean id="autoTxProxyCreator" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="interceptorNames">
+			<list>
+				<idref bean="transactionInterceptor"/>
+			</list>
+		</property>
+		<property name="beanNames">  
+	          <value>*Service,*Provider</value>
+        </property>  
+	</bean>
+	
+
+	<bean id="simpleJdbcDaoSupport"
+		class="org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="dao" class="com.smf.platform.dao.impl.GenericDaoImpl">
+	</bean>
+	
+	 <bean id="template" class="com.smf.platform.dao.impl.GenericTemplateImpl">
+		<property name="daoSupport" ref="simpleJdbcDaoSupport"/>
+	</bean>
+	
+	<!--Base Service end-->
+	<bean id="pfLogService" class="com.smf.platform.log.service.impl.PFLogServiceImpl">
+		<property name="appender">
+			<bean class="com.smf.platform.log.appender.LogPersistAppender">
+				<property name="logOwnerProvider">
+					<bean class="com.smf.platform.system.service.impl.LogOwnerProviderImpl"></bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="springConfigTool" class="com.smf.platform.framework.SpringConfigTool"></bean>
+
+	<bean id="systemConfig" class="com.smf.platform.framework.SystemConfig"></bean>
+</beans>

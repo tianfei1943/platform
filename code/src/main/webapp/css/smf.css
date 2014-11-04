@@ -1,0 +1,86 @@
+html { height:100%; overflow:hidden; background:#fff; color:#555;}
+body { height:100%; overflow:hidden; background:#fff; color: #555; margin:0; padding:0; font-size:12px; font-family:"Simsun"!important; /*font-family: Tahoma, "Microsoft Yahei"!important, "Simsun";*/}
+a{ color:#2c5893; text-decoration:underline}
+a:hover{  text-decoration:underline}
+img {border:0px;}
+
+#wrapper {background:url(../platform/images/main_bg.jpg) repeat-x;top:0px; left:0px; right:0px;	bottom:0px;	position:absolute; width: auto;	min-width:600px; height: auto; margin: 0px;	overflow:auto; padding:0px;	text-align: left;}
+
+/**------- 页面标题栏(包括操作栏) -------------**/
+.content_title {width: 100%; height:40px; BORDER-LEFT: #99BBE8 0px solid; BORDER-RIGHT: #99BBE8 0px solid; BORDER-TOP: #99BBE8 0px solid; BORDER-BOTTOM: #9da8b0 1px solid;}
+.content_title .title_label {float: left; background: url('../images/icon_title.png') no-repeat; width:160px; height:40px;}
+.content_title .title_label span {margin: 10px 0px 0px 40px; color: #0B2F47; font-family:"Microsoft YaHei",微软雅黑,"Microsoft JhengHei",Simsun; font-size: 14px; font-weight: bold; position:absolute; background-color:transparent;}
+.content_title .title_operation {float: right;}
+.content_title .title_operation img {margin: 8px 10px 0px 0px; cursor:pointer}
+
+/**------- 查询条件Panel div样式 -------------**/
+.query_panel{height:35px; left:0px; right:0px; margin: 5px 0px 5px 0px; BORDER-LEFT: #99BBE8 0px solid; BORDER-RIGHT: #99BBE8 0px solid; 
+	BORDER-TOP: #99BBE8 0px solid; BORDER-BOTTOM: #99BBE8 0px solid;}
+.query_panel select{ height:18px; border:1px solid #99BBE8} 
+
+FORM {top: 0px; left: 0px; right: 0px; bottom: 0px; padding: 0px; margin:0px; height: 100%; border: 0px solid white;}
+
+/*----表格 begin ----*/
+.smftable { padding: 0; margin: 0; border-spacing: 0px;border-left:1px solid #CCCCCC} 
+.smftable caption {font-weight: bold; color: #15428b; padding: 5px 5px 0 10px; text-align: left; height:26px; vertical-align: middle; background: url('../images/panel_title.png')} 
+.smftable th { font-weight:normal; color: #616161; border-right: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC; border-top: 1px solid #CCCCCC; letter-spacing: 2px; text-transform: uppercase; text-align: left; padding: 6px 6px 6px 12px; background: #f6f6f6  no-repeat; } 
+.smftable th.nobg { border-top: 0; border-left: 0; border-right: 1px solid #CCCCCC; background: none; } 
+.smftable td { border-right: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC; background: #fff; padding: 3px 3px 3px 3px; color: #616161; } 
+.smftable td.alt { background: #F5FAFA; color: #797268; } 
+.smftable th.spec { border-left: 1px solid #CCCCCC; border-top: 0; background: #fff no-repeat; } 
+.smftable th.specalt { border-left: 1px solid #CCCCCC; border-top: 0; background: #f5fafa no-repeat; color: #797268; } 
+/*----表格 end ----*/
+
+.LABEL_NORMAL {color:#616161;}
+.LABEL_ERROR {color:#FD0000;}
+.LABEL_WHITE {color:#ffffff; font-weight: lighter;}
+
+.A_WHITE {color:#ffffff; text-decoration:none;}
+
+.SMFHREF {color:#616161; text-decoration:underline;}
+.SMFHREF:visited {color:#616161; text-decoration:underline;}
+.SMFHREF:hover {color:#616161; text-decoration:underline;}
+
+TEXTAREA {BACKGROUND: #ffffff; CURSOR: text; COLOR: #000000; BORDER-LEFT: #99BBE8 1px solid; BORDER-RIGHT: #99BBE8 1px solid; 
+	BORDER-TOP: #99BBE8  1px solid; BORDER-BOTTOM: #99BBE8 1px solid; FONT-SIZE: 12px;}
+
+/*----- input文本输入框的样式定义 -----*/
+INPUT {FONT-SIZE: 12px; Height:18px; BACKGROUND: #ffffff; CURSOR: text; COLOR: #000000; BORDER-LEFT: #99BBE8 1px solid; BORDER-RIGHT: #99BBE8 1px solid; 
+	BORDER-TOP: #99BBE8  1px solid; BORDER-BOTTOM: #99BBE8 1px solid; PADDING-RIGHT: 1px; PADDING-LEFT: 1px; PADDING-TOP: 1px; 	PADDING-BOTTOM: 1px;}
+
+/* 用于在ExtJS的GridPanel样式*/
+INPUT.GridPanel {COLOR: #000000; FONT-SIZE: 12px;  PADDING: 0px;BORDER-LEFT: #99BBE8 1px solid; BORDER-RIGHT: #99BBE8 1px solid; BORDER-TOP: #99BBE8 1px solid; 
+	BORDER-BOTTOM: #99BBE8 1px solid; Height:18px;}
+
+/* 用于在ExtJS的GridPanel样式*/
+INPUT.GridPanel_Radio {cursor:pointer; COLOR: #000000; FONT-SIZE: 12px; PADDING: 0px; BORDER: 0px;}
+
+/* 宽度为140px，高度为22px*/
+INPUT.BUTTONCLASS {filter:Alpha(opacity=80); cursor: pointer; color:#000; HEIGHT: 22px; WIDTH:80px; font-weight:bold; border:0;	  
+	  background-color: #66b5f1 }
+#query{ background-color:#FF6600; color:#FFFFFF}
+
+/* 宽度不限，高度为22px*/
+INPUT.BUTTONCLASS2 {filter:Alpha(opacity=80);cursor: pointer;color:#616161;HEIGHT: 22px; BORDER-LEFT: #99BBE8 1px solid; BORDER-RIGHT: #99BBE8 1px solid; BORDER-TOP: #99BBE8 1px solid; 
+	BORDER-BOTTOM: #99BBE8 1px solid; }
+
+/* 宽度60px，高度为25px*/
+INPUT.SUBMIT_BUTTON_CLASS {filter:Alpha(opacity=80); color:#616161; HEIGHT: 25px; WIDTH: 60px; cursor: hand; BORDER-RIGHT: #99BBE8 1px solid; BORDER-TOP: #99BBE8 1px solid; 
+	BORDER-LEFT: #99BBE8 1px solid; BORDER-BOTTOM: #99BBE8 1px solid; }
+/*----- end input文本输入框的样式定义 end -----*/
+
+/* 组织机构树中组织机构节点图标样式 */
+.x-tree-node .sysgrouptreenode{background-image:url(../platform/images/sysgroup1.png);}
+/* 组织机构树中用户节点图标样式 */
+.x-tree-node .sysusertreenode{background-image:url(../platform/images/sysuser1.png);}
+.x-tree-node .menu-tree-node-icon-dir{background-image:url(../platform/images/directory1.png);}
+.x-tree-node .menu-tree-node-icon-leaf{background-image:url(../platform/images/leaf1.png);}
+/* 修改树节点字体大小 */
+.x-tree-node {font-size: 12px;}
+/* 修改表格字体大小 */
+.x-grid3-hd-row TD {font-size: 12px;}
+.x-grid3-row TD {font-size: 12px;}
+.x-toolbar td,.x-toolbar span,.x-toolbar input,.x-toolbar div,.x-toolbar select,.x-toolbar label{font:normal 12px arial,tahoma, helvetica, sans-serif;}
+.x-grid3-hd-row TD {font-size: 12px;/*改变表头字体大小*/ }
+.x-tip .x-tip-header-text {font: bold 12px tahoma,arial,helvetica,sans-serif; color:#444;}
+.x-tip .x-tip-body {font: normal 12px tahoma,arial,helvetica,sans-serif;color:#444;}
