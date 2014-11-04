@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.smf.platform.common.page.PageResponse;
 import com.smf.platform.framework.SystemConfig;
-import com.smf.platform.security.MySecurityMetadataSource;
+import com.smf.platform.security.SmfSecurityMetadataSource;
 import com.smf.platform.service.impl.SmfBaseServiceImpl;
 import com.smf.platform.system.domain.SysPrivilege;
 import com.smf.platform.system.service.api.SysPrivilegeService;
@@ -20,8 +20,8 @@ import com.smf.platform.system.service.api.SysPrivilegeService;
 public class SysPrivilegeServiceImpl extends SmfBaseServiceImpl<SysPrivilege> implements SysPrivilegeService{
 
 	@Autowired
-	@Qualifier("mySecurityMetadataSource")
-	private MySecurityMetadataSource databaseDefinitionSource = null; 
+	@Qualifier("smfSecurityMetadataSource")
+	private SmfSecurityMetadataSource databaseDefinitionSource = null; 
 	
 	protected final Log logger = LogFactory.getLog(getClass());
 	

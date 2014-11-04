@@ -31,12 +31,12 @@ import java.util.Iterator;
  * @Description TODO
  * @date 2013-9-5 上午11:46:35
  */
-public class MyAccessDecisionManager implements AccessDecisionManager {
+public class SmfAccessDecisionManager implements AccessDecisionManager {
 
     /**
      * LOGGER 日志对象
      */
-    private final static Logger LOGGER = Logger.getLogger(MyAccessDecisionManager.class);
+    private final static Logger LOGGER = Logger.getLogger(SmfAccessDecisionManager.class);
 
     /**
      * decide 方法接受三个参数，

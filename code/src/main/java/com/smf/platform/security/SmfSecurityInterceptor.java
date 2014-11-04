@@ -24,7 +24,7 @@ import java.io.IOException;
  * @Description TODO
  * @date 2013-9-5 上午10:20:11
  */
-public class MySecurityInterceptor extends AbstractSecurityInterceptor
+public class SmfSecurityInterceptor extends AbstractSecurityInterceptor
         implements Filter {
 
     private FilterInvocationSecurityMetadataSource securityMetadataSource;

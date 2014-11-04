@@ -21,7 +21,7 @@
         <!-- 登录配置 -->
         <security:form-login login-page="/platform/login/login.jsp"
                              authentication-failure-url="/platform/login/login.jsp?err=true"
-                             authentication-success-handler-ref="myAuthenticationSuccessService"
+                             authentication-success-handler-ref="smfAuthenticationSuccessService"
                              username-parameter="j_username"
                              password-parameter="j_password"
                              login-processing-url="/j_spring_security_check"/>
@@ -43,7 +43,7 @@
             <security:concurrency-control max-sessions="100" error-if-maximum-exceeded="true"/>
         </security:session-management>
         <!-- 自定义过滤器， 实现用户、角色、权限、资源的数据库管理 -->
-        <security:custom-filter ref="mySecurityFilter" before="FILTER_SECURITY_INTERCEPTOR"/>
+        <security:custom-filter ref="smfSecurityFilter" before="FILTER_SECURITY_INTERCEPTOR"/>
     </security:http>
 
     <bean id="accessDeniedHandler" class="com.smf.platform.security.LaihecaiAccessDeniedHandler">
@@ -51,36 +51,34 @@
     </bean>
     
     <!-- 自定义过滤器 -->
-    <bean id="mySecurityFilter" class="com.smf.platform.security.MySecurityInterceptor">
+    <bean id="smfSecurityFilter" class="com.smf.platform.security.SmfSecurityInterceptor">
         <!-- FilterInvocationSecurityMetadataSource 接口实现类, 资源源数据定义 -->
-        <property name="securityMetadataSource" ref="mySecurityMetadataSource"/>
+        <property name="securityMetadataSource" ref="smfSecurityMetadataSource"/>
         <!-- 鉴定管理类，跟用户信息信息有关 -->
-        <property name="authenticationManager" ref="myAuthenticationManager"/>
+        <property name="authenticationManager" ref="smfAuthenticationManager"/>
         <!-- AccessDecisionManager 接口实现类, 角色跟资源的关系 -->
         <!-- 访问决策器，决定某个用户具有的角色，是否有足够的权限去访问某个资源     -->
-        <property name="accessDecisionManager" ref="myAccessDecisionManager"/>
+        <property name="accessDecisionManager" ref="smfAccessDecisionManager" />
     </bean>
 
-    <!-- 鉴定管理类配置信息 -->
-    <security:authentication-manager alias="myAuthenticationManager">
-        <!-- 鉴定管理类 -->
-        <security:authentication-provider user-service-ref="myUserDetailsService">
-            <!-- 用户详情管理类 [UserDetailsService 接口 实现类] -->
+    <!-- 登录管理类配置信息 -->
+    <security:authentication-manager alias="smfAuthenticationManager">
+        <security:authentication-provider user-service-ref="smfUserDetailsService">
             <security:password-encoder hash="md5" />
         </security:authentication-provider>
-    </security:authentication-manager>
+    </security:authentication-manager> 
     <!-- 用户详细信息获取接口 -->
-    <bean id="myUserDetailsService" class="com.smf.platform.security.MyUserDetailsService"/>
+    <bean id="smfUserDetailsService" class="com.smf.platform.security.SmfUserDetailsService"/>
     <!-- 访问决策器， 决定某个用户具体的角色，是否有足够的权限访问某个资源 -->
-    <bean id="myAccessDecisionManager" class="com.smf.platform.security.MyAccessDecisionManager"/>
+    <bean id="smfAccessDecisionManager" class="com.smf.platform.security.SmfAccessDecisionManager"/>
     <!-- 资源源数据定义， 将所有的资源和权限的对应关系建立起来，即定义某一资源可以被哪些角色去访问。-->
-    <bean id="mySecurityMetadataSource" class="com.smf.platform.security.MySecurityMetadataSource"/>
+    <bean id="smfSecurityMetadataSource" class="com.smf.platform.security.SmfSecurityMetadataSource"/>
     <!-- 用户详情管理类使用的加密方式 
     <bean id="passwdEcoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"/>
    -->
     <!-- PasswordEncoder 密码接口 
     <bean id="PasswordUtil" class="com.utils.PasswordUtil" lazy-init="false"/>-->
-    <bean id="myAuthenticationSuccessService" class="com.smf.platform.security.MyAuthenticationSuccessService" >
+    <bean id="smfAuthenticationSuccessService" class="com.smf.platform.security.SmfAuthenticationSuccessService" >
     	<property name="target_url" value="platform/frames2/mainframe.jsp"></property>
     </bean>
 </beans>

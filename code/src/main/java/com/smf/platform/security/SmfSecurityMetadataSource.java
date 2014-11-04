@@ -53,7 +53,7 @@ import javax.annotation.Resource;
  * @Description TODO
  * @date 2013-9-5 上午10:50:30
  */
-public class MySecurityMetadataSource implements
+public class SmfSecurityMetadataSource implements
         FilterInvocationSecurityMetadataSource {
 
 	@Autowired
@@ -63,7 +63,7 @@ public class MySecurityMetadataSource implements
     /**
      * LOGGER 日志对象
      */
-    private final static Logger LOGGER = Logger.getLogger(MySecurityMetadataSource.class);
+    private final static Logger LOGGER = Logger.getLogger(SmfSecurityMetadataSource.class);
 
     //资源和权限以 Map 的形式做了映射
     private LinkedHashMap<String, Collection<ConfigAttribute>> map = new LinkedHashMap<String, Collection<ConfigAttribute>>();
@@ -91,7 +91,7 @@ public class MySecurityMetadataSource implements
     }
 
 
-    public MySecurityMetadataSource() {
+    public SmfSecurityMetadataSource() {
        // loadResourceDefine();
     }
 
