@@ -26,9 +26,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import javax.annotation.Resource;
 
 /**
@@ -68,6 +72,7 @@ public class MySecurityMetadataSource implements
      * 加载资源，初始化资源变量
      */
     private void loadResourceDefine() {
+    	LOGGER.info("初始化资源配置");
     	LinkedHashMap<String, String> srcMap = smfSecurityResourceService.getRequestMap();
     	for (Map.Entry<String, String> entry : srcMap.entrySet()) {
     		String key = entry.getKey();
@@ -122,7 +127,19 @@ public class MySecurityMetadataSource implements
      */
     @Override
     public Collection<ConfigAttribute> getAllConfigAttributes() {
-        return null;
+    	if(map.size()<1){
+    		loadResourceDefine();
+    	}
+    	
+    	Set<ConfigAttribute> allConfigAttribute = new HashSet<ConfigAttribute>();
+    	
+    	for(Map.Entry<String, Collection<ConfigAttribute>> entry:map.entrySet()){
+    		for(ConfigAttribute att : entry.getValue()){
+    			allConfigAttribute.add(att);
+    		}
+    	}
+    	
+        return allConfigAttribute;
     }
 
     /**

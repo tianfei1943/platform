@@ -66,9 +66,9 @@ public class SysResource implements Serializable {
 	private Set<SysPrivilege> privileges = new HashSet<SysPrivilege>();
 	private List<SysResource> children = new ArrayList<SysResource>();
 
-	@OneToMany
+	@OneToMany(fetch = javax.persistence.FetchType.LAZY)
 	@JoinColumn(name = "parentId")
-	@OrderBy("sortOrder")
+	//@OrderBy("sortOrder")
 	public List<SysResource> getChildren() {
 		return children;
 	}

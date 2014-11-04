@@ -44,10 +44,10 @@ public class MyUserDetailsService implements UserDetailsService {
 	@Qualifier("sysUserService")
 	private SysUserService sysUserService;
 	
-	// 获取菜单接口
-	@Autowired
-	@Qualifier("smfSecurityService")
-	private SmfSecurityService smfSecurityService;
+//	// 获取菜单接口
+//	@Autowired
+//	@Qualifier("smfSecurityService")
+//	private SmfSecurityService smfSecurityService;
     
     /**
 	 * 获取用户Details信息的回调函数.
@@ -80,71 +80,71 @@ public class MyUserDetailsService implements UserDetailsService {
 		SmfUserDetails smfUserDetails = new SmfUserDetails(sysUser.getUserCode(), sysUser.getPassword(), 
 				enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, grantedAuths, sysUser);
 
-		List<SysResource> rootMenus = new ArrayList<SysResource>();
-
-		List<SysResource> temp = new ArrayList<SysResource>();
-		// 获取当前用户可以访问的菜单
-		List<SysResource> menuSet = smfSecurityService.getMenusOfCurrentUser(smfUserDetails);
-//		System.out.println("menuSet size: " + menuSet.size());
-		Iterator<SysResource> iter = menuSet.iterator();
-		while (iter.hasNext()) {
-			SysResource menu = iter.next();
-			this.findTitle(temp, menu);
-		}
-
-		List<SysResource> sysResources = new ArrayList<SysResource>();
-		// 类型转化
-		this.sysResourceSetToList(sysResources, menuSet);
-
-		// 获取有权限的父节点
-		List<SysResource> tempall = new ArrayList<SysResource>();
-		Iterator<SysResource> iterall = menuSet.iterator();
-		while (iterall.hasNext()) {
-			SysResource tempmenu = iterall.next();
-			this.findTitleOfAll(tempall, tempmenu);
-		}
-		// 合并所有有权限的菜单
-		for (SysResource sysResourcetemp : tempall) {
-			if (!sysResources.contains(sysResourcetemp)) {
-				sysResources.add(sysResourcetemp);
-			}
-		}
-
-		// 根据sortOrder对rootMenus进行排序
-		Object[] temps = temp.toArray();
-		Arrays.sort(temps, new Comparator() {
-			public int compare(Object t1, Object t2) {
-				SysResource obj1 = (SysResource) t1;
-				SysResource obj2 = (SysResource) t2;
-				return obj1.getSortOrder().intValue() - obj2.getSortOrder().intValue();
-			}
-		});
-
-		for (int i = 0; i < temps.length; i++) {
-			SysResource sr = (SysResource) temps[i];
-			rootMenus.add(sr);
-		}
-		
-		// 从sysResources中去除重复的菜单
-		this.removeDuplicate(sysResources);
-		
-		smfUserDetails.setCurrentSysResources(sysResources);
-		smfUserDetails.setRootMenus(rootMenus);
-		
-		Set<SysResource> osPropSysResources = smfSecurityService.getOsPropSysResourceOfCurrentUser(smfUserDetails);
-		smfUserDetails.setBoPropSysResources(osPropSysResources);
-				
+//		List<SysResource> rootMenus = new ArrayList<SysResource>();
+//
+//		List<SysResource> temp = new ArrayList<SysResource>();
+//		// 获取当前用户可以访问的菜单
+//		List<SysResource> menuSet = smfSecurityService.getMenusOfCurrentUser(smfUserDetails);
+////		System.out.println("menuSet size: " + menuSet.size());
+//		Iterator<SysResource> iter = menuSet.iterator();
+//		while (iter.hasNext()) {
+//			SysResource menu = iter.next();
+//			this.findTitle(temp, menu);
+//		}
+//
+//		List<SysResource> sysResources = new ArrayList<SysResource>();
+//		// 类型转化
+//		this.sysResourceSetToList(sysResources, menuSet);
+//
+//		// 获取有权限的父节点
+//		List<SysResource> tempall = new ArrayList<SysResource>();
+//		Iterator<SysResource> iterall = menuSet.iterator();
+//		while (iterall.hasNext()) {
+//			SysResource tempmenu = iterall.next();
+//			this.findTitleOfAll(tempall, tempmenu);
+//		}
+//		// 合并所有有权限的菜单
+//		for (SysResource sysResourcetemp : tempall) {
+//			if (!sysResources.contains(sysResourcetemp)) {
+//				sysResources.add(sysResourcetemp);
+//			}
+//		}
+//
+//		// 根据sortOrder对rootMenus进行排序
+//		Object[] temps = temp.toArray();
+//		Arrays.sort(temps, new Comparator() {
+//			public int compare(Object t1, Object t2) {
+//				SysResource obj1 = (SysResource) t1;
+//				SysResource obj2 = (SysResource) t2;
+//				return obj1.getSortOrder().intValue() - obj2.getSortOrder().intValue();
+//			}
+//		});
+//
+//		for (int i = 0; i < temps.length; i++) {
+//			SysResource sr = (SysResource) temps[i];
+//			rootMenus.add(sr);
+//		}
+//		
+//		// 从sysResources中去除重复的菜单
+//		this.removeDuplicate(sysResources);
+//		
+//		smfUserDetails.setCurrentSysResources(sysResources);
+//		smfUserDetails.setRootMenus(rootMenus);
+//		
+//		Set<SysResource> osPropSysResources = smfSecurityService.getOsPropSysResourceOfCurrentUser(smfUserDetails);
+//		smfUserDetails.setBoPropSysResources(osPropSysResources);
+//				
 		System.out.println("SmfSecurityUserServiceImpl loadUserByUsername() invoke end");
 		
 		return smfUserDetails;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void removeDuplicate(List<SysResource> sysResources)  { 
-		HashSet h = new HashSet(sysResources);  
-		sysResources.clear();  
-		sysResources.addAll(h);  
-	}  
+//	@SuppressWarnings({ "rawtypes", "unchecked" })
+//	private void removeDuplicate(List<SysResource> sysResources)  { 
+//		HashSet h = new HashSet(sysResources);  
+//		sysResources.clear();  
+//		sysResources.addAll(h);  
+//	}  
 	
 	/**
 	 * 获得用户所有角色的权限集合.  存放的是权限Code
@@ -184,58 +184,58 @@ public class MyUserDetailsService implements UserDetailsService {
 		return authSet;
 	}
 	
-	/**
-	 * 查找标题
-	 * 
-	 * @param temp
-	 * @param sysResource
-	 */
-	private void findTitle(List<SysResource> temp, SysResource sysResource) {
-		if (sysResource.getParent() == null) {
-			if (!temp.contains(sysResource)) {
-				temp.add(sysResource);
-			}
-		} else {
-			findTitle(temp, sysResource.getParent());
-		}
+//	/**
+//	 * 查找标题
+//	 * 
+//	 * @param temp
+//	 * @param sysResource
+//	 */
+//	private void findTitle(List<SysResource> temp, SysResource sysResource) {
+//		if (sysResource.getParent() == null) {
+//			if (!temp.contains(sysResource)) {
+//				temp.add(sysResource);
+//			}
+//		} else {
+//			findTitle(temp, sysResource.getParent());
+//		}
+//
+//	}
 
-	}
-
-	/**
-	 * 查找所有相关的父节点
-	 * 
-	 * @param temp
-	 * @param sysResource
-	 */
-	private void findTitleOfAll(List<SysResource> temp, SysResource sysResource) {
-		if (sysResource.getParent() == null) {
-			if (!temp.contains(sysResource)) {
-				temp.add(sysResource);
-			}
-		} else {
-			if (!temp.contains(sysResource.getParent())) {
-				temp.add(sysResource.getParent());
-			}
-			findTitle(temp, sysResource.getParent());
-		}
-
-	}
-
-	/**
-	 * 存储类型转换
-	 * 
-	 * @param sysResources
-	 * @param sysResourceSet
-	 */
-	private void sysResourceSetToList(List<SysResource> sysResources, List<SysResource> sysResourceSet) {
-		for (SysResource sysResource : sysResourceSet) {
-			if (sysResource.getStatus() == SmfConst.STATUS_SHOW) {
-				sysResources.add(sysResource);
-				if (sysResource.getChildren() != null) {
-					sysResourceSetToList(sysResources, sysResource.getChildren());
-				}
-			}
-		}
-	};
+//	/**
+//	 * 查找所有相关的父节点
+//	 * 
+//	 * @param temp
+//	 * @param sysResource
+//	 */
+//	private void findTitleOfAll(List<SysResource> temp, SysResource sysResource) {
+//		if (sysResource.getParent() == null) {
+//			if (!temp.contains(sysResource)) {
+//				temp.add(sysResource);
+//			}
+//		} else {
+//			if (!temp.contains(sysResource.getParent())) {
+//				temp.add(sysResource.getParent());
+//			}
+//			findTitle(temp, sysResource.getParent());
+//		}
+//
+//	}
+//
+//	/**
+//	 * 存储类型转换
+//	 * 
+//	 * @param sysResources
+//	 * @param sysResourceSet
+//	 */
+//	private void sysResourceSetToList(List<SysResource> sysResources, List<SysResource> sysResourceSet) {
+//		for (SysResource sysResource : sysResourceSet) {
+//			if (sysResource.getStatus() == SmfConst.STATUS_SHOW) {
+//				sysResources.add(sysResource);
+//				if (sysResource.getChildren() != null) {
+//					sysResourceSetToList(sysResources, sysResource.getChildren());
+//				}
+//			}
+//		}
+//	};
 
 }

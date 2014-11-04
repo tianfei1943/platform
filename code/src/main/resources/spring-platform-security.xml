@@ -21,11 +21,12 @@
         <!-- 登录配置 -->
         <security:form-login login-page="/platform/login/login.jsp"
                              authentication-failure-url="/platform/login/login.jsp?err=true"
-                             default-target-url="#{systemConfig.getValue('LayoutHome')}"
+                             authentication-success-handler-ref="myAuthenticationSuccessService"
                              username-parameter="j_username"
                              password-parameter="j_password"
                              login-processing-url="/j_spring_security_check"/>
-                             <!-- authentication-success-handler-ref="myAuthenticationSuccessHandler" -->
+                              <!--  default-target-url="#{systemConfig.getValue('LayoutHome')}"-->
+                             
         <!-- 退出配置 -->
         <!--
             logout-url:退出请求地址。系统默认:j_spring_security_logout
@@ -78,6 +79,8 @@
     <bean id="passwdEcoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"/>
    -->
     <!-- PasswordEncoder 密码接口 
-    <bean id="PasswordUtil" class="com.utils.PasswordUtil" lazy-init="false"/>
-    <bean id="myAuthenticationSuccessHandler" class="com.smf.platform.security.MyAuthenticationSuccessHandler"/>-->
+    <bean id="PasswordUtil" class="com.utils.PasswordUtil" lazy-init="false"/>-->
+    <bean id="myAuthenticationSuccessService" class="com.smf.platform.security.MyAuthenticationSuccessService" >
+    	<property name="target_url" value="platform/frames2/mainframe.jsp"></property>
+    </bean>
 </beans>
